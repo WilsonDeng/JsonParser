@@ -10,6 +10,7 @@ def dict_decoder(s):
     number1 = 0
     number2 = 0
     number3 = 0
+    number4 = 0    # number of comma
     start = 0
     for i, j in enumerate(s[:]):
         if j == '{' and number3 % 2 == 0:
@@ -23,8 +24,9 @@ def dict_decoder(s):
         elif j == ']' and number3 % 2 == 0:
             number2 -= 1
         # 找出分隔字典中的项的逗号的位置
-        elif (j == ',' and number1 % 2 == 1 and number2 == 0 and number3 % 2 == 0) or i == len(s) - 1:
+        elif (j == ',' and number1 == 1 and number2 == 0 and number3 % 2 == 0 )  or i == len(s) - 1:
             # 找出相邻两个合符规范的双引号，即找出字典的key
+            number4 += 1
             qout1 = s[start:i].find('"')
             if qout1 == -1 and i == len(s) - 1:         # 判断是否为空字典
                 if dic == {}:
@@ -419,5 +421,9 @@ JSON = r'''
 : "A key can be any string"
     }
 '''
+s = '{"a": {"a": {"a": 123, "b": [1,2,3]}}}'
 
+d = dict_decoder(s)
+
+print d
 
